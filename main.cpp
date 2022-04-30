@@ -36,9 +36,17 @@ for (const auto &item : m) {
         return x.second > y.second;
     });
 
-    for (auto const &pair: vec) {
-        std::cout << pair.first << " : " << pair.second << std::endl;
+    std::ofstream out;
+    out.open("stats.txt");
+    if (!out.is_open())
+    {
+        std::cerr << "Error! Cannot open an outfile." << std::endl;
     }
+    for (auto const &pair: vec) {
+        out << pair.first << " : " << pair.second << std::endl;
+    }
+
+    out.close();
 }
 
 class
@@ -59,9 +67,9 @@ WordsCount
         std::vector<std::string>
         stopwords_vector()
         {
-            std::string pathStopW = "/Users/atabekovibrahim/Workshop/StatisticalAnalysis/stop-words.txt";
+            std::string pathStopWordsFile = "stop-words.txt";
             char delimiter = ',';
-            std::string noNeedWords = read_file(pathStopW);
+            std::string noNeedWords = read_file(pathStopWordsFile);
             std::vector<std::string> noNeedWordsVector;
             size_t pos = 0;
             std::string token;
@@ -81,13 +89,14 @@ WordsCount
 std::string
 WordsCount::read_file(const std::string& path)
 {
-    std::ifstream fileShakespear(path);
-    if (!fileShakespear)
+    std::ifstream f(path);
+    if (!f)
         std::cerr << "Error! Cannot open a file." << std::endl;
     std::stringstream ss;
-    ss << fileShakespear.rdbuf();
+    ss << f.rdbuf();
     text = ss.str();
 
+    f.close();
     return text;
 }
 
@@ -153,8 +162,8 @@ void WordsCount::check_exist(const std::string& word)
 int
 main(int argc, char** argv)
 {
-    std::string pathMainFile = "/Users/atabekovibrahim/Workshop/StatisticalAnalysis/shakespeare-text.txt";
-    std::string pathStopWordsFile = "/Users/atabekovibrahim/Workshop/StatisticalAnalysis/stop-words.txt";
+    std::string pathMainFile = "shakespeare-text.txt";
+    //std::string pathStopWordsFile = "stop-words.txt";
     WordsCount wordsCount;
     std::string originalText = wordsCount.read_file(pathMainFile);
     std::cout << originalText << " - до" << std::endl;
@@ -166,5 +175,6 @@ main(int argc, char** argv)
     std::map<std::string, int> count = wordsCount.counter();
 
     print_map(count);
+
     return 0;
 }
