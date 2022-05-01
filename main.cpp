@@ -23,18 +23,18 @@ InVector(char ch, const std::vector<char>& vec)
     return 0;
 }
 
-void print_map(std::map<std::string, int> const& m)
+void PrintMap(std::map<std::string, int> const& m)
 {
     std::vector<std::pair<std::string, int>> vec;
     vec.reserve(m.size()); // ????????????????????
-for (const auto &item : m) {
+    for (const auto &item : m) {
         vec.emplace_back(item);
     }
 
     std::sort(vec.begin(), vec.end(),
               [] (const std::pair<std::string, int> &x, const std::pair<std::string, int> &y){
-        return x.second > y.second;
-    });
+                  return x.second > y.second;
+              });
 
     std::ofstream out;
     out.open("stats.txt");
@@ -52,37 +52,37 @@ for (const auto &item : m) {
 class
 WordsCount
 {
-    private:
-        std::string text;
-        std::string cleanText;
-        std::string stopWords;
-        std::map<std::string, int> mapWordFreq;
+private:
+    std::string text;
+    std::string cleanText;
+    std::string stopWords;
+    std::map<std::string, int> mapWordFreq;
 
-    public:
-        std::string read_file(const std::string& path);
-        std::string erase_separator();
-        std::map<std::string, int> counter();
-        void check_exist(const std::string& word);
+public:
+    std::string read_file(const std::string& path);
+    std::string erase_separator();
+    std::map<std::string, int> counter();
+    void check_exist(const std::string& word);
 
-        std::vector<std::string>
-        stopwords_vector()
-        {
-            std::string pathStopWordsFile = "stop-words.txt";
-            char delimiter = ',';
-            std::string noNeedWords = read_file(pathStopWordsFile);
-            std::vector<std::string> noNeedWordsVector;
-            size_t pos = 0;
-            std::string token;
-            while((pos = noNeedWords.find(delimiter)) != std::string::npos) {
-                token = noNeedWords.substr(0, pos);
-                noNeedWordsVector.push_back(token);
-                noNeedWords.erase(0, pos + 1); // + 1, т.к. ','
-            }
-
-            return noNeedWordsVector;
+    std::vector<std::string>
+    stopwords_vector()
+    {
+        std::string pathStopWordsFile = "stop-words.txt";
+        char delimiter = ',';
+        std::string noNeedWords = read_file(pathStopWordsFile);
+        std::vector<std::string> noNeedWordsVector;
+        size_t pos = 0;
+        std::string token;
+        while((pos = noNeedWords.find(delimiter)) != std::string::npos) {
+            token = noNeedWords.substr(0, pos);
+            noNeedWordsVector.push_back(token);
+            noNeedWords.erase(0, pos + 1); // + 1, т.к. ','
         }
-        std::vector<char> separators = {'.', '!', '?', ',', ';', ':', '-', '\n', '\t'};
-        std::vector<char> sepsToSpaces = {'\n', '\t'};
+
+        return noNeedWordsVector;
+    }
+    std::vector<char> separators = {'.', '!', '?', ',', ';', ':', '-', '\n', '\t'};
+    std::vector<char> sepsToSpaces = {'\n', '\t'};
 
 };
 
@@ -107,7 +107,7 @@ WordsCount::erase_separator()
     for(const auto& sym : text) {
         if (!InVector(sym, separators) || (sym == '-' && flagDoubleSpaceHyphen == 0)) {
             if ((flagDoubleSpaceHyphen == 0 && sym == ' ') || (sym != ' '))
-            cleanText.push_back(sym);
+                cleanText.push_back(sym);
         }
         if (sym == '-' || sym == ' ') {
             flagDoubleSpaceHyphen = 1;
@@ -174,7 +174,7 @@ main(int argc, char** argv)
 
     std::map<std::string, int> count = wordsCount.counter();
 
-    print_map(count);
+    PrintMap(count);
 
     return 0;
 }
