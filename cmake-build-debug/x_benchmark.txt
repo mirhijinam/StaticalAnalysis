@@ -1,0 +1,2 @@
+Benchmark for file reading: 0.39412ms
+Benchmark for counting: 0.758865ms

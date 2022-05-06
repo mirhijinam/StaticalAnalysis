@@ -1,89 +1,86 @@
 #include "WordsCount.h"
 
 int
-InVector(char ch, const std::vector<char>& vec)
+InVector(wchar_t ch, const std::vector<wchar_t>& vec)
 {
-    for(const auto& sus : vec) {
+    for(wchar_t sus : vec) {
         if (sus == ch)
             return 1;
     }
     return 0;
 }
 
-std::string
+std::wstring
 WordsCount::read_file(const std::string& path)
 {
-    std::ifstream f(path);
+    std::wifstream f(path);
     if (!f)
         std::cerr << "Error! Cannot open a file." << std::endl;
-    std::stringstream ss;
+    std::wstringstream ss;
     ss << f.rdbuf();
     text = ss.str();
-
     f.close();
     return text;
 }
 
-std::string
+std::wstring
 WordsCount::erase_separator()
 {
     int flagDoubleSpaceHyphen = 0;
-    for(const auto& sym : text) {
-        if (!InVector(sym, separators) || (sym == '-' && flagDoubleSpaceHyphen == 0)) {
-            if ((flagDoubleSpaceHyphen == 0 && sym == ' ') || (sym != ' '))
-                cleanText.push_back(sym);
+    for(wchar_t sym : text) {
+        if (!InVector(sym, separators) || (sym == L'-' && flagDoubleSpaceHyphen == 0)) {
+            if ((flagDoubleSpaceHyphen == 0 && sym == L' ') || (sym != L' '))
+                cleanText += sym;
         }
-        if (sym == '-' || sym == ' ') {
+        if (sym == L'-' || sym == L' ') {
             flagDoubleSpaceHyphen = 1;
         } else {
             flagDoubleSpaceHyphen = 0;
         }
         if (InVector(sym, sepsToSpaces)) {
-            cleanText.push_back(' ');
+            cleanText += L' ';
         }
     }
-    for (std::string::iterator it = cleanText.begin(); it != cleanText.end(); it++)
+    for (std::wstring::iterator it = cleanText.begin(); it != cleanText.end(); it++)
     {
-        std::string::iterator begin = it;
-        while (it != cleanText.end() && ::isspace(*it) )it++;
+        std::wstring::iterator begin = it;
+        while (it != cleanText.end() && ::isspace(*it)) it++;
         if (it - begin > 1)
             it = cleanText.erase(begin + 1, it) - 1;
     }
 
-    cleanText.push_back('\n');
+    cleanText += L'\n';
     return cleanText;
 }
 
-std::map<std::string, int>
+std::map<std::wstring, int>
 WordsCount::counter()
 {
-    std::string word;
+    std::wstring word;
     int flagDoubleSpace = 0;
     for(const auto& letter : cleanText) {
-        if ((letter == ' ' && flagDoubleSpace == 0) || letter == '\n') {
+        if ((letter == L' ' && flagDoubleSpace == 0) || letter == L'\n') {
             check_exist(word);
-            word = "";
+            word = L"";
             flagDoubleSpace = 1;
 
         }
-        else if (letter != ' '){
+        else if (letter != L' ') {
             word += letter;
             flagDoubleSpace = 0;
         }
     }
-    //check_exist(word);
 
     return mapWordFreq;
 }
 
 void
-WordsCount::check_exist(const std::string& word)
+WordsCount::check_exist(const std::wstring& word)
 {
-    std::vector<std::string> vec = stopwords_vector();
+    std::vector<std::wstring> vec = stopwords_vector();
     if (std::find(vec.begin(), vec.end(), word) != vec.end()) {
 
-    }
-    else {
+    } else {
 
         if (mapWordFreq.find(word) != mapWordFreq.end()) {
             mapWordFreq[word]++;
@@ -93,16 +90,16 @@ WordsCount::check_exist(const std::string& word)
     }
 }
 
-std::vector<std::string>
+std::vector<std::wstring>
 WordsCount::stopwords_vector()
 {
-    std::string pathStopWordsFile = "stop-words.txt";
-    char delimiter = ',';
-    std::string noNeedWords = read_file(pathStopWordsFile);
-    std::vector<std::string> noNeedWordsVector;
+    std::string pathStopWordsFile = "x_stop-words.txt";
+    wchar_t delimiter = L',';
+    std::wstring noNeedWords = read_file(pathStopWordsFile);
+    std::vector<std::wstring> noNeedWordsVector;
     size_t pos;
-    std::string token;
-    while((pos = noNeedWords.find(delimiter)) != std::string::npos) {
+    std::wstring token;
+    while((pos = noNeedWords.find(delimiter)) != std::wstring::npos) {
         token = noNeedWords.substr(0, pos);
         noNeedWordsVector.push_back(token);
         noNeedWords.erase(0, pos + 1); // + 1, т.к. ','

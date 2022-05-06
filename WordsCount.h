@@ -14,20 +14,19 @@
 
 class WordsCount {
 private:
-    std::string text;
-    std::string cleanText;
-    std::map<std::string, int> mapWordFreq;
+    std::wstring text;
+    std::wstring cleanText;
+    std::map<std::wstring, int> mapWordFreq;
 
 public:
-    std::string read_file(const std::string& path);
-    std::string erase_separator();
-    std::map<std::string, int> counter();
-    void check_exist(const std::string& word);
+    std::wstring read_file(const std::string& path);
+    std::wstring erase_separator();
+    std::map<std::wstring, int> counter();
+    void check_exist(const std::wstring& word);
 
-    std::vector<std::string> stopwords_vector();
-    std::vector<char> separators = {'.', '!', '?', ',', ';', ':', '-', '\n', '\t'};
-    std::vector<char> sepsToSpaces = {'\n', '\t'};
-
+    std::vector<std::wstring> stopwords_vector();
+    std::vector<wchar_t> separators = {L'–', L'…', L'.', L'!', L'=', L'?', L',', L';', L':', L'-', L'(', L')', L'[', L']', L'{', L'}', L'\"', L'\'', L'\n', L'\t'};
+    std::vector<wchar_t> sepsToSpaces = { L'–', L'…', L'(', L')', L'[', L']', L'{', L'}', L'"', L'\'', L'\n', L'\t'};
 };
 
 

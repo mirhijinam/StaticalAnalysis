@@ -10,31 +10,55 @@ using std::chrono::milliseconds;
 int
 main(int argc, char** argv)
 {
-    std::string pathMainFile = "shakespeare-text.txt";
+    std::string pathMainFile = "x_shakespeare-text.txt";
     WordsCount wordsCount;
 
+    std::ofstream outputBenchmark;
+    outputBenchmark.open("x_benchmark.txt");
+    if (!outputBenchmark.is_open()) {
+        std::cerr << "Error! Cannot open an outfile of benchmarks." << std::endl;
+    }
     auto t1ReadFile = high_resolution_clock::now();
-    std::string originalText = wordsCount.read_file(pathMainFile); // // // // // // // // // //
+    std::wstring originalText = wordsCount.read_file(pathMainFile); // // // // // // // // // //
     auto t2ReadFile = high_resolution_clock::now();
     auto msReadFile_int = duration_cast<milliseconds>(t2ReadFile - t1ReadFile);
     duration<double, std::milli> msReadFile_double = t2ReadFile - t1ReadFile;
-    std::cout << "Benchmark for file reading:" << std::endl;
-    std::cout << msReadFile_int.count() << "ms\n";
-    std::cout << msReadFile_double.count() << "ms\n";
+    outputBenchmark << "Benchmark for file reading: " << msReadFile_double.count() << "ms" << std::endl;
 
-    std::cout << "\nдо:\n" << "\"" << originalText << "\"" << std::endl;
-    std::string cleanText;
+    outputBenchmark.close();
+
+    std::wofstream outputTerminal;
+    outputTerminal.open("x_original-and-clean-texts.txt");
+    if (!outputTerminal.is_open()) {
+        std::cerr << "Error! Cannot open an outfile of texts." << std::endl;
+    }
+    outputTerminal << L"до:\n" << std::endl;
+    for (auto wcharFromOrigText : originalText) {
+        outputTerminal << wcharFromOrigText;
+    }
+    outputTerminal << std::endl;
+
+    std::wstring cleanText;
     cleanText = wordsCount.erase_separator();
-    std::cout << "\nпосле:\n" << "\"" <<cleanText.substr(0, cleanText.length()-1) << "\"\n" << std::endl;
+    outputTerminal << L"\nпосле:\n" << std::endl;
+    for (auto wcharFromCleanText : cleanText) {
+        outputTerminal << wcharFromCleanText << L" ";
+    }
+    outputTerminal << std::endl;
+
+    outputTerminal.close();
+
+
+    outputBenchmark.open("x_benchmark.txt", std::wios::app);
 
     auto t1Counter = high_resolution_clock::now();
-    std::map<std::string, int> count = wordsCount.counter(); // // // // // // // // // //
+    std::map<std::wstring, int> count = wordsCount.counter(); // // // // // // // // // //
     auto t2Counter = high_resolution_clock::now();
     auto msCounter_int = duration_cast<milliseconds>(t2Counter - t1Counter);
     duration<double, std::milli> msCounter_double = t2Counter - t1Counter;
-    std::cout << "Benchmark for counting:" << std::endl;
-    std::cout << msCounter_int.count() << "ms\n";
-    std::cout << msCounter_double.count() << "ms\n";
+    outputBenchmark << "Benchmark for counting: " << msCounter_double.count() << "ms" << std::endl;
+
+    outputBenchmark.close();
 
     SortPrintMap(count);
 
