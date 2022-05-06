@@ -118,6 +118,7 @@ WordsCount::erase_separator()
             cleanText.push_back(' ');
         }
     }
+    cleanText.push_back('\n');
     return cleanText;
 }
 
@@ -127,7 +128,7 @@ WordsCount::counter()
     std::string word;
     int flagDoubleSpace = 0;
     for(const auto& letter : cleanText) {
-        if (letter == ' ' && flagDoubleSpace == 0) {
+        if ((letter == ' ' && flagDoubleSpace == 0) || letter == '\n') {
             check_exist(word);
             word = "";
             flagDoubleSpace = 1;
