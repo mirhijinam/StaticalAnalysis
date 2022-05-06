@@ -3,4 +3,4 @@ project(StatisticalAnalysis)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(StatisticalAnalysis main.cpp)
+add_executable(StatisticalAnalysis main.cpp WordsCount.cpp WordsCount.h SortPrintMap.h)
