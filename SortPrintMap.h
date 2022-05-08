@@ -28,6 +28,7 @@ SortPrintMap(std::map<std::wstring, int> const& m)
     for (auto const &pair: vec)
         out << pair.first << L" : " << pair.second << std::endl;
     out.close();
+
 }
 
 

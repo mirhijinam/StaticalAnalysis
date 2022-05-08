@@ -61,7 +61,10 @@ main(int argc, char** argv)
 
     outputBenchmark.close();
 
+    wordsCount.participles_search();
     SortPrintMap(count);
 
     return 0;
 }
+
+// ([^ ]*)(я)\\b
