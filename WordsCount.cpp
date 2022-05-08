@@ -1,5 +1,5 @@
 #include "WordsCount.h"
-
+#include <regex>
 int
 InVector(wchar_t ch, const std::vector<wchar_t>& vec)
 {
@@ -10,16 +10,21 @@ InVector(wchar_t ch, const std::vector<wchar_t>& vec)
     return 0;
 }
 
+
+
 std::wstring
 WordsCount::read_file(const std::string& path)
 {
-    std::wifstream f(path);
+    std::string strText;
+    std::ifstream f(path);
     if (!f)
         std::cerr << "Error! Cannot open a file." << std::endl;
-    std::wstringstream ss;
+    std::stringstream ss;
     ss << f.rdbuf();
-    text = ss.str();
+    strText = ss.str();
     f.close();
+    std::wstring_convert <std::codecvt_utf8 <wchar_t>, wchar_t> convert;
+    text = convert.from_bytes(strText);
     return text;
 }
 
@@ -27,28 +32,22 @@ std::wstring
 WordsCount::erase_separator()
 {
     int flagDoubleSpaceHyphen = 0;
-    for(wchar_t sym : text) {
-        if (!InVector(sym, separators) || (sym == L'-' && flagDoubleSpaceHyphen == 0)) {
-            if ((flagDoubleSpaceHyphen == 0 && sym == L' ') || (sym != L' '))
-                cleanText += sym;
+
+    for(auto wchar : text) {
+        if (!InVector(wchar, separators) || (wchar == L'-' && flagDoubleSpaceHyphen == 0)) {
+            if ((flagDoubleSpaceHyphen == 0 && wchar == L' ') || (wchar != L' '))
+                cleanText += wchar;
         }
-        if (sym == L'-' || sym == L' ') {
+        if (wchar == L'-' || wchar == L' ') {
             flagDoubleSpaceHyphen = 1;
         } else {
             flagDoubleSpaceHyphen = 0;
         }
-        if (InVector(sym, sepsToSpaces)) {
+        if (InVector(wchar, sepsToSpaces)) {
             cleanText += L' ';
         }
     }
-    for (std::wstring::iterator it = cleanText.begin(); it != cleanText.end(); it++)
-    {
-        std::wstring::iterator begin = it;
-        while (it != cleanText.end() && ::isspace(*it)) it++;
-        if (it - begin > 1)
-            it = cleanText.erase(begin + 1, it) - 1;
-    }
-
+    reduce(cleanText);
     cleanText += L'\n';
     return cleanText;
 }
@@ -88,6 +87,44 @@ WordsCount::check_exist(const std::wstring& word)
             mapWordFreq[word] = 1;
         }
     }
+}
+
+std::wstring
+WordsCount::trim(const std::wstring& str,
+                 wchar_t space_trim)
+{
+    const auto strBegin = str.find_first_not_of(space_trim);
+    if (strBegin == std::string::npos)
+        return L""; // no content
+
+    const auto strEnd = str.find_last_not_of(space_trim);
+    const auto strRange = strEnd - strBegin + 1;
+
+    return str.substr(strBegin, strRange);
+}
+
+std::wstring
+WordsCount::reduce(const std::wstring& str,
+                   const std::wstring& fill,
+                   wchar_t space)
+{
+    // trim first
+    auto result = trim(str, space);
+
+    // replace sub ranges
+    auto beginSpace = result.find_first_of(space);
+    while (beginSpace != std::wstring::npos)
+    {
+        const auto endSpace = result.find_first_not_of(space, beginSpace);
+        const auto range = endSpace - beginSpace;
+
+        result.replace(beginSpace, range, fill);
+
+        const auto newStart = beginSpace + fill.length();
+        beginSpace = result.find_first_of(space, newStart);
+    }
+    cleanText = result;
+    return cleanText;
 }
 
 std::vector<std::wstring>

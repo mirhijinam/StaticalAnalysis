@@ -28,7 +28,7 @@ main(int argc, char** argv)
     outputBenchmark.close();
 
     std::wofstream outputTerminal;
-    outputTerminal.open("x_original-and-clean-texts.txt");
+    outputTerminal.open("y_original-and-clean-texts.txt");
     if (!outputTerminal.is_open()) {
         std::cerr << "Error! Cannot open an outfile of texts." << std::endl;
     }

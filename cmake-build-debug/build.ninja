@@ -84,6 +84,12 @@ build CMakeFiles/StatisticalAnalysis.dir/WordsCount.cpp.o: CXX_COMPILER__Statist
   OBJECT_DIR = CMakeFiles/StatisticalAnalysis.dir
   OBJECT_FILE_DIR = CMakeFiles/StatisticalAnalysis.dir
 
+build CMakeFiles/StatisticalAnalysis.dir/Logger.cpp.o: CXX_COMPILER__StatisticalAnalysis_Debug /Users/atabekovibrahim/Workshop/StatisticalAnalysis/Logger.cpp || cmake_object_order_depends_target_StatisticalAnalysis
+  DEP_FILE = CMakeFiles/StatisticalAnalysis.dir/Logger.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk -std=gnu++11
+  OBJECT_DIR = CMakeFiles/StatisticalAnalysis.dir
+  OBJECT_FILE_DIR = CMakeFiles/StatisticalAnalysis.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target StatisticalAnalysis
@@ -92,7 +98,7 @@ build CMakeFiles/StatisticalAnalysis.dir/WordsCount.cpp.o: CXX_COMPILER__Statist
 #############################################
 # Link the executable StatisticalAnalysis
 
-build StatisticalAnalysis: CXX_EXECUTABLE_LINKER__StatisticalAnalysis_Debug CMakeFiles/StatisticalAnalysis.dir/main.cpp.o CMakeFiles/StatisticalAnalysis.dir/WordsCount.cpp.o
+build StatisticalAnalysis: CXX_EXECUTABLE_LINKER__StatisticalAnalysis_Debug CMakeFiles/StatisticalAnalysis.dir/main.cpp.o CMakeFiles/StatisticalAnalysis.dir/WordsCount.cpp.o CMakeFiles/StatisticalAnalysis.dir/Logger.cpp.o
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk
   OBJECT_DIR = CMakeFiles/StatisticalAnalysis.dir
   POST_BUILD = :

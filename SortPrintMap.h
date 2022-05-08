@@ -18,7 +18,7 @@ SortPrintMap(std::map<std::wstring, int> const& m)
               });
 
     std::wofstream out;
-    out.open("x_stats.txt");
+    out.open("y_stats.txt");
     if (!out.is_open())
     {
         std::cerr << "Error! Cannot open an outfile." << std::endl;

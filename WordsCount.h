@@ -7,6 +7,8 @@
 #include <map>
 #include <algorithm>
 
+#include <codecvt>
+
 #ifndef STATISTICALANALYSIS_WORDSCOUNT_H
 #define STATISTICALANALYSIS_WORDSCOUNT_H
 
@@ -23,10 +25,14 @@ public:
     std::wstring erase_separator();
     std::map<std::wstring, int> counter();
     void check_exist(const std::wstring& word);
-
+    std::wstring trim(const std::wstring& str,
+                      wchar_t space_trim = L' ');
+    std::wstring reduce(const std::wstring& str,
+                       const std::wstring& fill = L" ",
+                       wchar_t space = L' ');
     std::vector<std::wstring> stopwords_vector();
-    std::vector<wchar_t> separators = {L'–', L'…', L'.', L'!', L'=', L'?', L',', L';', L':', L'-', L'(', L')', L'[', L']', L'{', L'}', L'\"', L'\'', L'\n', L'\t'};
-    std::vector<wchar_t> sepsToSpaces = { L'–', L'…', L'(', L')', L'[', L']', L'{', L'}', L'"', L'\'', L'\n', L'\t'};
+    std::vector<wchar_t> separators = {L'—', L'…', L'.', L'!', L'=', L'?', L',', L';', L':', L'-', L'(', L')', L'[', L']', L'{', L'}', L'\"', L'\'', L'\n', L'\t'};
+    std::vector<wchar_t> sepsToSpaces = { L'—', L'…', L'(', L')', L'[', L']', L'{', L'}', L'"', L'\'', L'\n', L'\t'};
 };
 
 
