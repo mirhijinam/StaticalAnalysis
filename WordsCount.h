@@ -11,6 +11,8 @@
 
 #include <codecvt>
 
+#include <regex>
+
 #ifndef STATISTICALANALYSIS_WORDSCOUNT_H
 #define STATISTICALANALYSIS_WORDSCOUNT_H
 

@@ -50,3 +50,6 @@
 3	2336	1651985288747752033	CMakeFiles/StatisticalAnalysis.dir/main.cpp.o	8e1d2584817930fb
 3	2352	1651985288841767351	CMakeFiles/StatisticalAnalysis.dir/WordsCount.cpp.o	b1f67356de60059
 2352	2428	1651985288924797892	StatisticalAnalysis	843d522fb8e5ae01
+3	3007	1651985484452102087	CMakeFiles/StatisticalAnalysis.dir/main.cpp.o	8e1d2584817930fb
+1	2099	1651985612625770652	CMakeFiles/StatisticalAnalysis.dir/WordsCount.cpp.o	b1f67356de60059
+2099	2218	1651985612749756058	StatisticalAnalysis	843d522fb8e5ae01

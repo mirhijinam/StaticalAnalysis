@@ -1,5 +1,5 @@
 #include "WordsCount.h"
-#include <regex>
+
 int
 InVector(wchar_t ch, const std::vector<wchar_t>& vec)
 {
@@ -47,7 +47,8 @@ WordsCount::erase_separator()
             cleanText += L' ';
         }
     }
-    //reduce(cleanText);
+
+    cleanText = std::regex_replace(cleanText, std::wregex(L"^ +| +$|( ) +"), L"$1");
     cleanText += L'\n';
     return cleanText;
 }

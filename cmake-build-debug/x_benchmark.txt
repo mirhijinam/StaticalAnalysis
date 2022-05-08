@@ -1,2 +1,2 @@
-Benchmark for file reading: 2.41304ms
-Benchmark for counting: 174.501ms
+Benchmark for file reading: 1.96086ms
+Benchmark for counting: 156.755ms
