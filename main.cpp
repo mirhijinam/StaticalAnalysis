@@ -10,6 +10,7 @@ using std::chrono::milliseconds;
 int
 main(int argc, char** argv)
 {
+    setlocale(LC_ALL, "");
     std::string pathMainFile = "x_shakespeare-text.txt";
     WordsCount wordsCount;
 
@@ -28,11 +29,11 @@ main(int argc, char** argv)
     outputBenchmark.close();
 
     std::wofstream outputTerminal;
-    outputTerminal.open("y_original-and-clean-texts.txt");
-    if (!outputTerminal.is_open()) {
+    outputTerminal.open("y_original-and-clean-texts.txt", std::ios::out | std::ios::binary);
+    if (!outputTerminal.is_open())
         std::cerr << "Error! Cannot open an outfile of texts." << std::endl;
-    }
-    outputTerminal << L"до:\n" << std::endl;
+    outputTerminal.imbue(std::locale(outputTerminal.getloc(),new std::codecvt_utf8_utf16<wchar_t>));
+    outputTerminal << L"до:" << std::endl;
     for (auto wcharFromOrigText : originalText) {
         outputTerminal << wcharFromOrigText;
     }
@@ -40,9 +41,9 @@ main(int argc, char** argv)
 
     std::wstring cleanText;
     cleanText = wordsCount.erase_separator();
-    outputTerminal << L"\nпосле:\n" << std::endl;
+    outputTerminal << L"\nпосле:" << std::endl;
     for (auto wcharFromCleanText : cleanText) {
-        outputTerminal << wcharFromCleanText << L" ";
+        outputTerminal << wcharFromCleanText;
     }
     outputTerminal << std::endl;
 

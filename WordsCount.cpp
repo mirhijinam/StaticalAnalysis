@@ -47,7 +47,7 @@ WordsCount::erase_separator()
             cleanText += L' ';
         }
     }
-    reduce(cleanText);
+    //reduce(cleanText);
     cleanText += L'\n';
     return cleanText;
 }
@@ -87,44 +87,6 @@ WordsCount::check_exist(const std::wstring& word)
             mapWordFreq[word] = 1;
         }
     }
-}
-
-std::wstring
-WordsCount::trim(const std::wstring& str,
-                 wchar_t space_trim)
-{
-    const auto strBegin = str.find_first_not_of(space_trim);
-    if (strBegin == std::string::npos)
-        return L""; // no content
-
-    const auto strEnd = str.find_last_not_of(space_trim);
-    const auto strRange = strEnd - strBegin + 1;
-
-    return str.substr(strBegin, strRange);
-}
-
-std::wstring
-WordsCount::reduce(const std::wstring& str,
-                   const std::wstring& fill,
-                   wchar_t space)
-{
-    // trim first
-    auto result = trim(str, space);
-
-    // replace sub ranges
-    auto beginSpace = result.find_first_of(space);
-    while (beginSpace != std::wstring::npos)
-    {
-        const auto endSpace = result.find_first_not_of(space, beginSpace);
-        const auto range = endSpace - beginSpace;
-
-        result.replace(beginSpace, range, fill);
-
-        const auto newStart = beginSpace + fill.length();
-        beginSpace = result.find_first_of(space, newStart);
-    }
-    cleanText = result;
-    return cleanText;
 }
 
 std::vector<std::wstring>
